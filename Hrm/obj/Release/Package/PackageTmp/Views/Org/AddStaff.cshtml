@@ -1,0 +1,99 @@
+﻿@{
+    Layout = null;
+}
+
+@model IEnumerable<Hrm.Models.InvitationModel>
+
+<div style="width: 640px; box-shadow: 0 0 3px 0 dimgrey; position: absolute; background: white; border-radius: 2px; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: default; padding: 10px">
+    <div id="add-staff-container" style="width: 300px; padding: 10px; float: left">
+        <label>Tên người sử dụng</label>
+        <br />
+        <input id="staff-username-input" />
+        <button id="search-staff-button" style="background: green; outline: none">Tìm</button>
+        <div id="search-staff-result" style="width: 100%; background: #e6e9ee; height: 100px; margin-top: 10px; box-shadow: 0 0 3px 0 dimgrey">
+        </div>
+        <div id="add-staff-error-message" style="color: red"></div>
+    </div>
+    <div style="width: 300px; padding: 10px; float: right">
+        <label>Danh sách lời mời đã gửi</label>
+        <div style="width: 100%; height: 200px; box-shadow: 0 0 3px 0 dimgrey; overflow: hidden">
+            <table id="invitation-table" style="width: 100%; border-spacing: 0">
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr style="height: 35px">
+                                <td style="padding: 0 5px">@item.User.GetName()</td>
+                                <td style="width: 105px">
+                                    @if (item.Status == 0)
+                                    {
+                                        <div style="outline: none; background: cornflowerblue; position: relative">
+                                            Đã gửi lời mời
+                                            <div class="sub-menu" style="display: grid; top: 20px; background: white; left: -1px; position: absolute; box-shadow: 0 0 2px 0 dimgrey">
+                                                <a>Huỷ lời mời</a>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (item.Status == -1)
+                                    {
+                                        <div style="outline: none; background: red; position: relative">
+                                            Đã từ chối
+                                            <div class="sub-menu" style="display: grid; top: 20px; background: white; left: -1px; position: absolute; box-shadow: 0 0 2px 0 dimgrey">
+                                                <a href="/">Gửi lại lời mời</a>
+                                                <a>Xoá lời mời</a>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $("#search-staff-button").click(function () {
+            $("#add-staff-error-message")[0].innerHTML = '';
+            $.ajax({
+                url: "/Org/SearchStaff?username=" + $("#staff-username-input").val(),
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    $("#search-staff-result").empty();
+                    if (data == "No result") {
+                        $("#search-staff-result").append("<div style='text-align: center; color: grey; padding: 10px 0'>Không có kết quả</div>")
+                    }
+                    else {
+                        var tmp = "<div style='height: 50px; padding: 10px'><div style='width: calc(100% - 20px); height: 100%; padding: 10px; background: darkseagreen'>"
+                            + "<div style='float: left; width: calc(100% - 50px)'>" + data.Value + "</div>"
+                            + "<button id='send-invitation' style='background: green; outline: none; float: right; height: 100%; width: 50px' onclick='sendInvite(" + data.ID + ")'>Mời nhân viên</button>"
+                            + "</div ></div > ";
+                        $("#search-staff-result").append(tmp);
+                    }
+                }
+            })
+        })
+        function sendInvite(id) {
+            $.ajax({
+                url: "/Org/AddStaff/" + id,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == "InvExst") {
+                        $("#add-staff-error-message")[0].innerHTML = 'Lời mời đã tồn tại';
+                    }
+                    else if (data == "StfInOrg") {
+                        $("#add-staff-error-message")[0].innerHTML = 'Nhân viên đã ở trong công ty';
+                    }
+                    else if (data == "Success") {
+                        $("#send-invitation").replaceWith("<span style='color: grey; float; right'>Đã gửi lời mời</span>");
+                    }
+                }
+            })
+        }
+    </script>
+</div>

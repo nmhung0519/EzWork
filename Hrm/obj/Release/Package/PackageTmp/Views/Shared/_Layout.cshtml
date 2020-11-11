@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EZWork - Quản lý công việc</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/Home.css" />
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
+</head>
+<body style="margin: 0">
+    <div style="top: 0; left: 0; margin: 0; height: 60px; width: 100%; background: cornflowerblue; position: sticky; z-index: 9999">
+        <a href="/Home">
+            <div style="left: 0; top: 0; position: absolute; height: 60px; width: 250px; color: white; text-align: center; line-height: 60px; font-size: 24px; background: rgba(255, 255, 255, 0.2)">@Session["orgname"].ToString()</div>
+        </a>
+        <div style="height: 60px; margin: 0 250px; width: calc(100% - 500px); position: absolute">
+            <ul style="margin: 0 auto; position: absolute; list-style: none; padding: 0">
+                <li style="margin: 0 10px; float: left">
+                    <a style="height: 100%; width: 100%; text-decoration: none" href="/Home/Work">
+                        <div style="height: 60px; width: 80px; background: rgba(255, 255, 0, 0.7); line-height: 60px; text-align: center">Nhiệm vụ</div>
+                    </a>
+                </li>
+                <li style="margin: 0 10px; float: left">
+                    <a style="height: 100%; width: 100%; text-decoration: none" href="/Org">
+                        <div style="height: 60px; width: 80px; background: rgba(255, 255, 0, 0.7); line-height: 60px; text-align: center">Công ty</div>
+                    </a>
+                </li>
+                </li>
+            </ul>
+        </div>
+        <div id="user-block" style="right: 0; top: 0; position: absolute; height: 60px; width: 250px; cursor: pointer">
+            <div style="top: 50%; left: 50%; transform: translate(-50%, -50%); position: relative; padding: 0 10px; display: flex">
+                <div style="background: #edd6e2; width: 40px; height: 40px; border-radius: 40px; margin-right: 10px"></div>
+                <div style="width: calc(100% - 50px); height: 40px">
+                    <span style="line-height: 40px">@Session["fullname"].ToString()</span>
+                </div>
+            </div>
+            <div id="user-block-sub-menu" style="width: 100%;position: absolute; background: white; top: 60px; left: 0; box-shadow: 0 0 3px 0 dimgrey">
+                <ul style="padding: 0; list-style: none; margin: 0">
+                    <li style=" border-top: 1px solid lightgrey; border-bottom: 1px solid lightgrey">
+                        <a style="padding: 5px 10px; display: block" href="/Account/Logout">Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="work-area" style="margin-bottom: 60px">
+        @RenderBody()
+    </div>
+</body>
+</html>

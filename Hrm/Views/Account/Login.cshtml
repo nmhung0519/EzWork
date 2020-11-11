@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Account/_LayoutLogin.cshtml";
+    ViewBag.Title = "Đăng nhập";
+}
+
+@using Hrm.Models
+@model LoginModel
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <div id="login-wrap">
+        <div style="margin: 10px 0">
+            @Html.LabelFor(m => m.Username)
+            @Html.TextBoxFor(m => m.Username, new { autofocus = "autofocus" })
+            @Html.ValidationMessageFor(m => m.Username)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @value = "", autofocus = "autofocus" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <div style="margin: 10px 0">
+            @Html.LabelFor(m => m.RememberMe)
+            @Html.CheckBoxFor(m => m.RememberMe)
+        </div>
+    </div>
+    <div style="text-align: center; bottom: 30px; height: 40px; width: 100%;">
+        <input type="submit" value="Đăng nhập" style="width: auto; background: lightsteelblue; cursor: pointer; height: 100%" />
+    </div>
+}
+<div style="width: calc(100% - 20px); bottom: 5px; text-align: center; position: absolute">
+    <a href="/Account/Register" style="text-decoration: none; padding: 10px">Đăng ký thành viên</a>
+</div>

@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Account/_LayoutLogin.cshtml";
+    ViewBag.Title = "Đăng ký";
+}
+
+@model Hrm.Models.RegisterModel
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+<div id="login-wrap">
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.FirstName)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.LastName)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.Sex)
+        <select data-val="true" data-val-required="Chọn giới tính" id="Sex" name="Sex">
+            <option hidden value="">Giới tính</option>
+            <option value="M">Nam</option>
+            <option value="F">Nữ</option>
+        </select>
+        @Html.ValidationMessageFor(m => m.Sex)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.BirthDay)
+        @Html.TextBoxFor(m => m.BirthDay, new { type = "date" })
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.Phone)
+        @Html.TextBoxFor(m => m.Phone)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.Username)
+        @Html.TextBoxFor(m => m.Username, new { autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.Username)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.Password1)
+        @Html.PasswordFor(m => m.Password1, new { @value = "", autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.Password1)
+    </div>
+    <div style="margin: 10px 0">
+        @Html.LabelFor(m => m.Password2)
+        @Html.PasswordFor(m => m.Password2, new { @value = "", autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.Password2)
+    </div>
+</div>
+    <div style="text-align: center; bottom: 30px; height: 40px; width: 100%;">
+        <input type="submit" value="Đăng ký" style="width: auto; background: lightsteelblue; cursor: pointer; height: 100%" />
+    </div>
+}
+<div style="width: calc(100% - 20px); bottom: 5px; text-align: center; position: absolute">
+    <span>Đã có tài khoản? </span>
+    <a href="/Account/Login" style="text-decoration: none">Đăng nhập</a>
+</div>
+
+

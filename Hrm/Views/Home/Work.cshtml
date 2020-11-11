@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/Work.css" />
+<div style="height: 100px; padding: 10px 30px 0 30px; background: #e5f9ff; border-bottom: 1px solid lightgrey;">
+    <span style="font-size: 40px; font-weight: bold">Nhiệm vụ</span>
+    <button id="new-work-button" style="background: green; float: right; outline: none; font-size: 16px; margin-top: 5px; width: 100px; cursor: pointer" onclick="newWork()">Thêm nhiệm vụ</button>
+    <div style="padding: 0 0 10px 0; margin-bottom: 0; height: 43px; position: relative">
+        <ul style="list-style: none; height: 54px; margin: 0; padding: 0">
+            <li style="float: left; line-height: 53px;" value="all">
+                <div class="menu-item menu-item-selected">Tất cả nhiệm vụ</div>
+            </li>
+            <li style="float: left; line-height: 53px" value="assignto">
+                <div class="menu-item">Nhiệm vụ được giao</div>
+            </li>
+            <li style="float: left; line-height: 53px;" value="assign">
+                <div class="menu-item">Nhiệm vụ đã giao</div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="work-container" style="padding: 10px; width: calc(100% - 40px); max-width: 1200px; margin: 10px 0; left: 50%; transform: translateX(-50%); position: relative;">
+</div>
+<script>
+    $("#work-container").ready(function () {
+        $("#work-container").load("/Home/WorkAll");
+    })
+    $("#work-area").delegate(".work-row", "click", function (e) {
+        console.log($(e.target));
+        if (!$(e.target).hasClass("row-disable")) {
+            $("body").append("<div id='overlay'><div style='height: 80%; width: 80%; top: 50%; left: 50%; background: white; transform: translate(-50%, -50%); box-shadow: 0 0 3px 0 dimgrey; border-radius: 5px; position: absolute'></div ></div>")
+            $("#overlay").load("/Home/WorkDetail/" + $(e.target).parents(".work-row").attr("data-itemid"));
+        }
+    });
+    $("body").delegate("#overlay", "mousedown", function (e) {
+        if ($(e.target).attr("id") == "overlay") {
+            $(e.target).remove();
+        }
+    });
+    $(".menu-item").click(function (e) {
+        if (!$(e.target).hasClass("menu-item-selected")) {
+            $(".menu-item").removeClass("menu-item-selected");
+            $(e.target).addClass("menu-item-selected");
+            if ($(e.target).parents("li").attr("value") == "assign") {
+                $("#work-container").load("/Home/WorkAssign");
+            }
+            else if ($(e.target).parents("li").attr("value") == "assignto") {
+                $("#work-container").load("/Home/WorkAssignTo");
+            }
+            else if ($(e.target).parents("li").attr("value") == "all") {
+                $("#work-container").load("/Home/WorkAll");
+            }
+        }
+    });
+    function newWork() {
+        $("body").append("<iframe style='background: rgba(0, 0, 0, 0.2); width: 100%; height: 100%; position: fixed; top: 0; left: 0;' src='/Home/NewWork'></iframe>")
+    }
+</script>

@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+@model Hrm.Models.NewWorkModel 
+
+<head>
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
+</head>
+<body>
+        <div id="self-close" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0"></div>
+        <div style ='height: 80%; width: 80%; top: 50%; left: 50%; background: white; transform: translate(-50%, -50%); box-shadow: 0 0 3px 0 dimgrey; border-radius: 5px; padding: 10px; position: absolute'>
+
+            @using (Html.BeginForm("CreateWork", "Home"))
+            {
+                <div style="height: calc(100% - 60px); overflow: auto">
+                    <div>
+                        <div style="padding: 10px 0; margin-bottom: 10px">
+                            @Html.LabelFor(m => m.Title, new { @style = "width: 200px" })
+                            @Html.TextBoxFor(m => m.Title, new { id = "new-work-title" })
+                            @Html.ValidationMessageFor(m => m.Title, "", new { @class="error-message" })
+                            <label>Thẻ</label>
+                            <input />
+                        </div>
+                        <div style="padding: 10px 0; margin-bottom: 10px">
+                            @Html.LabelFor(m => m.Content)
+                            <br />
+                            @Html.TextAreaFor(m => m.Content, new { @style = "max-width: calc(100% - 12px); padding: 5px" })
+                            @Html.ValidationMessageFor(m => m.Content, "", new { @class = "error-message" })
+                        </div>
+                        <div style="padding: 10px 0; margin-bottom: 10px">
+                            @Html.LabelFor(m => m.AssignTo)
+                            @Html.DropDownListFor(m => m.AssignTo, Model.ListStaff(), new { style = "width: 200px;" })
+                        </div>
+                        <div style="padding: 10px 0; margin-bottom: 10px">
+                            @Html.LabelFor(m => m.Deadline)
+                            @Html.TextBoxFor(m => m.Deadline, new { Type = "datetime-local" })
+                        </div>
+                        <div style="padding: 10px 0; margin-bottom: 10px">
+                            <label>File đính kèm</label>
+                            <input type="file" multiple/>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 60px; width: 100%; position: absolute; bottom: 0; left: 0; border-radius: 5px; border-top: 1px solid lightgrey">
+                    <button style="background: green">Tạo nhiệm vụ</button>
+                    <button style="background: red" onclick="cancel()">Huỷ</button>
+                </div>
+            }
+            <script>
+                function cancel() {
+                    event.preventDefault();
+                    if (confirm("Đóng cửa sổ tạo nhiệm vụ?")) $(window.frameElement).remove();
+                }
+                $("#self-close").click(function() {
+                    if (confirm("Đóng cửa sổ tạo nhiệm vụ?")) $(window.frameElement).remove();
+                })
+            </script>
+        </div>
+</body>
+

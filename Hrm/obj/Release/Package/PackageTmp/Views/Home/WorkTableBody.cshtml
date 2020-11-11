@@ -1,0 +1,28 @@
+﻿@{Layout = null; }
+
+@model Hrm.Models.WorkBodyTableModel
+
+@if (Model != null)
+{
+    foreach (var item in Model.ListItem)
+    {
+        <tr class="work-row" data-itemid="@item.ID">
+            <td style="text-align: center"><input class="row-disable" type="checkbox" /></td>
+            <td class="work-title" style="padding: 0 10px"><span>@item.WorkTitle</span></td>
+            <td>
+                <a class="row-disable" href="/Home/Work">
+                    <div class="row-disable" style="background: #edd6e2; height: 30px; width: 30px; border-radius: 30px; float: left; margin: 0 5px"></div>
+                    <span class="row-disable" style="line-height: 30px">@item.AssignName</span>
+                </a>
+            </td>
+            <td>
+                <a href="/Home/Work">
+                    <div class="row-disable" style="background: #edd6e2; height: 30px; width: 30px; border-radius: 30px; float: left; margin: 0 5px"></div>
+                    <span class="row-disable" style="line-height: 30px">@item.AssignToName</span>
+                </a>
+            </td>
+            <td style="padding: 0 10px">@item.getStatus()</td>
+        </tr>
+    }
+}
+

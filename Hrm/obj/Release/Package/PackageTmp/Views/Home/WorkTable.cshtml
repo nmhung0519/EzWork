@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+
+@model Hrm.Models.WorkBodyTableModel
+
+<div style="height: 20px; padding: 0 10px">
+    <div style=" width: 100%; height: 100%">
+        <div style="float: right; display: flex">
+            <button style="height: 20px; margin: 0 10px">Trang đầu</button>
+            <button style="height: 20px; margin: 0 10px">Trước</button>
+            <ul style="list-style: none; padding: 0; margin: 0">
+                <li>
+                    <button class="change-page-button selected" style="width: 20px; height: 20px; background: #d3d3ff; outline: none; text-align: center; padding: 0">1</button>
+                    <button class="change-page-button" style="width: 20px; height: 20px; background: #d3d3ff; outline: none; text-align: center; padding: 0">2</button>
+                    <button class="change-page-button" style="width: 20px; height: 20px; background: #d3d3ff; outline: none; text-align: center; padding: 0">3</button>
+                </li>
+            </ul>
+            <button style="height: 20px; margin: 0 10px">Sau</button>
+        </div>
+    </div>
+</div>
+<table id="work-table" style="width: 100%; margin-top: 10px; border-spacing: 0; box-shadow: 0 0 3px 0 dimgrey;">
+    <thead>
+        <tr style="height: 30px; text-align: left; background: cornflowerblue">
+            <th style="width: 30px; text-align: center">
+                <input type="checkbox" />
+            </th>
+            <th style="text-align: left; padding: 0 10px">Nhiệm vụ</th>
+            <th style="width: 150px; padding: 0 10px">Người giao</th>
+            <th style="width: 150px; padding: 0 10px">Người thực hiện</th>
+            <th style="width: 150px; padding: 0 10px">Trạng thái</th>
+        </tr>
+        <tr>
+            <th style="padding: 10px 5px"></th>
+            <th style="padding: 10px 5px"><input class="search-work-input" style="width: calc(100% - 10px)" name="title" /></th>
+            <th style="padding: 10px 5px"><input class="search-work-input" style="width: calc(100% - 10px)" name="assignee" /></th>
+            <th style="padding: 10px 5px"><input class="search-work-input" style="width: calc(100% - 10px)" name="performer"/></th>
+            <th style="padding: 10px 5px">
+                <select class="search-work-input" style="width: calc(100% - 10px)" name="status">
+                    <option></option>
+                    <option value="Đã giao">Đã giao</option>
+                    <option value="Đã giao, Đã quá hạn">Đã giao, Đã quá hạn</option>
+                    <option value="Đang thực hiện">Đang thực hiện</option>
+                    <option value="Đã quá hạn">Đã quá hạn</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                    <option value="Hoàn thành quá hạn">Hoàn thành quá hạn</option>
+                    <option value="Đã trả lại">Đã trả lại</option>
+                </select>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.Partial("WorkTableBody", Model)
+    </tbody>
+</table>
+<script>
+    $(".search-work-input").change(function () {
+        console.log("change");
+        $("#work-table>tbody").load("/Home/WorkList", { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+    })
+    $(".change-page-button").click(function (e) {
+        console.log($(e.target)[0].innerHTML);
+        if (!($(e.target).hasClass("selected"))) {
+            $(".change-page-button").removeClass("selected");
+            $(e.target).addClass("selected");
+            $("#work-table>tbody").load("/Home/WorkList/" + $(e.target)[0].innerHTML, { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+        }
+    })
+</script>
+

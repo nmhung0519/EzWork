@@ -1,0 +1,54 @@
+﻿@{ Layout = null; }
+
+@model IEnumerable<Hrm.Models.InvitationModel>
+
+<div id="org-invitation-notification">
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div style="height: 18px; width: 18px; position: absolute; background: red; font-size: 14px; line-height: 18px; border-radius: 18px; color: white; top: -3px; left: 13px;">@Model.Count()</div>
+    }
+    <div style="left: -4px; top: 6px; width: 300px; height: 100px; box-shadow: 0 0 3px 0 dimgrey; position: relative; background: white; z-index: 999; visibility: hidden; cursor: default; padding: 10px">
+        <div>
+            <label style="font-size: 18px">Danh sách lời mời</label>
+        </div>
+        <table>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="invitation-row" data-id="@item.ID">
+                        <td>@item.Org.Name</td>
+                        <td style="padding: 0 5px; width: 30px;"><div class="invitation-accept-button" style="height: 20px; width: 20px; background: green; border-radius: 20px; cursor: pointer; text-align: center; line-height: 20px">V</div></td>
+                        <td style="padding: 0 5px; width: 30px"><div class="invitation-deny-button" style="height: 20px; width: 20px; background: red; border-radius: 20px; cursor: pointer; text-align: center; line-height: 20px">X</div></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(".invitation-accept-button").click(function (e) {
+            $.ajax({
+                url: "/Org/Invatation/" + $(e.target).parents(".invitation-row").attr("data-id") + "?accept=true",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == "Success") {
+                        window.location = "/Home/Work";
+                    }
+                }
+            })
+        });
+        $(".invitation-deny-button").click(function () {
+            $.ajax({
+                url: "/Org/Invitaion/" + $(e.target).parents(".invitation-row").attr("data-id") + "?accept=false",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        })
+    </script>
+</div>
+

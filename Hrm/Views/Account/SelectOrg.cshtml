@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Account/_LayoutLogin.cshtml";
+    ViewBag.Title = "Danh sách tổ chức";
+}
+@model IEnumerable<Hrm.Models.KeyNamePair> 
+
+<div style="text-align: center; padding: 5px 15px; font-size: 30px; position: relative">
+    <span>Tổ chức</span>
+    @{ Html.RenderAction("OrgInvitationNotice", "Account"); }
+</div>
+<div id="org-list" style="padding: 5px 10px 10px 10px; height: 300px; background: lightgrey; margin: 0 10px; position: relative">
+    @foreach (var item in Model)
+    {
+        <a href='/Account/Login2/@item.ID' style="text-decoration: none">
+            <div class="org-item">@item.Value</div>
+        </a>
+    }
+</div>
+<div style="width: 100%; text-align: center; position: relative; height: 30px">
+    <a style="text-decoration: none; font-size: 16px; line-height: 30px" href="/Account/CreateOrg">Tạo tổ chức</a>
+</div>
+<div style="width: 100%; text-align: center; position: relative; height: 40px">
+    <a style="text-decoration: none; font-size: 16px; line-height: 40px; padding: 10px; background: cornflowerblue; box-shadow: 0 0 3px 0 dimgrey; color: white; " href="/Account/Logout">Đăng xuất</a>
+</div>
+<script>
+    $("#org-invitation-notification").click(function () {
+        if ($("#org-invitation-notification>div")[1].style.visibility == 'visible') {
+            $("#org-invitation-notification>div")[1].style.visibility = 'hidden';
+        }
+        else $("#org-invitation-notification>div")[1].style.visibility = 'visible';
+    })
+</script>
+

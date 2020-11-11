@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+} 
+
+@model Hrm.Models.AssignWorkInfoModel
+
+@{
+    int staffid = int.Parse(Session["staffid"].ToString());
+}
+<div style='height: 80%; width: 80%; top: 50%; left: 50%; background: white; transform: translate(-50%, -50%); position: absolute'>
+    <div style="width: 100%; height: calc(100% - 60px)">
+        <div style="padding: 10px">
+            <div style="height: 40px; position: relative">
+                <span style="font-size: 30px;">@Model.WorkTitle</span>
+                @if (staffid == Model.AssignID)
+                {
+                    <button id="edit-button" style="border-radius: 5px; float: right; margin-top: 5px; cursor: pointer">Sửa</button>
+                }
+                <input style="top: 0; left: 0; line-height: 30px; font-size: 30px; display: none; position: absolute" />
+            </div>
+            <span>Được giao bởi: @Model.AssignName, @Model.AssignTime</span>
+        </div>
+        <div id="work-detail-content" style="padding: 10px">
+            <div>
+                <span>@Model.WorkContent</span>
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%; height: 60px; border-top: 1px solid lightgrey">
+        @if (staffid == Model.AssignToID)
+        {
+            if (Model.Status == 0)
+            {
+                <button class="change-status-work-button" data-id="@Model.ID" status="1" style="background: green; outline: none">Nhận nhiệm vụ</button>
+            }
+            else if (Model.Status == 1)
+            {
+                <button class="change-status-work-button" data-id="@Model.ID" status="2" style="background: green; outline: none">Hoàn thành nhiệm vụ</button>
+                <button class="change-status-work-button" data-id="@Model.ID" status="-1" style="background: yellow; outline: none">Trả lại nhiệm vụ</button>
+            }
+        }
+        else if (staffid == Model.AssignID)
+        {
+            <button class="change-status-work-button" data-id="@Model.ID" status="-2" style="background: yellow; outline: none">Thu hồi nhiệm vụ</button>
+        }
+    </div>
+</div>
+<script>
+    $("#edit-button").click(function (e) {
+        console.log($(e.target));
+    })
+    $(".change-status-work-button").click(function (e) {
+        console.log($(e.target).attr("data-id"), $(e.target).attr("status"));
+        $.ajax({
+            url: "/Home/ChangeStatus/" + $(e.target).attr("data-id") + "?status=" + $(e.target).attr("status"),
+            type: "POST",
+            contentType: 'aplication/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data == "Success") location.reload();
+            }
+        })
+    })
+</script>

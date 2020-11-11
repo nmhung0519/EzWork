@@ -1,0 +1,66 @@
+﻿body {
+}
+
+#account-wrap {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    box-shadow: 0 0 3px 0 dimgrey;
+    position: fixed;
+}
+
+#login-wrap>div>label {
+    width: 130px;
+    float: left;
+}
+#login-wrap>div>input[type='checkbox'] {
+    margin: 5px 0;
+}
+
+.field-validation-error {
+    color:red;
+    margin-left: 130px;
+    line-height: 20px
+}
+
+.org-item {
+    width: 100%;
+    background: cornflowerblue;
+    outline: 1px solid grey;
+    text-align: center;
+    line-height: 25px;
+    margin-bottom: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#org-invitation-notification {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 10px;
+    top: 9px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#org-invitation-notification::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    right: 5px;
+    background: url(/Icon/bell.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+}
+
+#org-invitation-notification:hover {
+    background: rgba(0, 0, 0, 0.1);
+}

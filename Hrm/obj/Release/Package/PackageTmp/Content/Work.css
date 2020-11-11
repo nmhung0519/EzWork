@@ -1,0 +1,49 @@
+﻿body {
+    
+}
+
+.work-row {
+    height: 40px;
+    cursor: pointer;
+}
+
+.work-row:nth-child(2n+1) {
+    background: beige;
+}
+
+.work-row:nth-child(2n) {
+    background: lightgrey;
+}
+
+.work-row:hover {
+    cursor: pointer;
+    background: lightblue;
+}
+
+.work-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.work-title:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+.menu-item {
+    cursor: pointer;
+    margin: 0 10px
+}
+
+.menu-item:hover {
+    color: cornflowerblue;
+}
+
+.menu-item-selected {
+    color: blue;
+    border-bottom: 2px solid blue;
+}
+
+.selected {
+    background: cornflowerblue !important;
+}

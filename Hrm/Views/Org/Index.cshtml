@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Hrm.Models.StaffModel>
+<link rel="stylesheet" type="text/css" href="~/Content/Work.css" />
+<div style="padding: 10px 30px; background: #e5f9ff; border-bottom: 1px solid lightgrey;">
+    <span style="font-size: 40px; font-weight: bold">Danh sách nhân viên</span>
+    <button id="add-staff" style="background: #09a909; width: 120px; height: 30px; color: white; font-family: arial; cursor: pointer; float: right; margin-top: 9px; outline: none;">
+        Thêm nhân viên
+    </button>
+</div>
+<div style="height: 400px; padding: 10px; width: calc(100% - 40px); max-width: 1200px; margin: 10px 0; left: 50%; transform: translateX(-50%); position: absolute;">
+    <table style="width: 100%" border="1">
+        <thead>
+            <tr style="background: cornflowerblue">
+                <th style="width: 50px">STT</th>
+                <th>Tên</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int count = Model.Count();
+                for (var i = 0; i < count; i++)
+                {
+                    <tr>
+                        <td style="text-align: center">@(i+1) </td>
+                        <td style="padding: 0 10px">@Model.ElementAt(i).User.GetName()</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $("#add-staff").click(function () {
+        $("body").append("<div id='overlay'></div>");
+        $("#overlay").load("/Org/AddStaff");
+    })
+    $("body").delegate("#overlay", "mousedown", function (e) {
+        if ($(e.target).attr("id") == 'overlay') {$(e.target).remove()}
+    })
+</script>
