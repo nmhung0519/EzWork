@@ -3,21 +3,117 @@
     Layout = null;
 }
 
-@model Hrm.Models.WorkBodyTableModel
+@model string
 
+<script>
+    var totalItem;
+    $(".search-work-input").change(function () {
+        $("#loading-icon").show();
+        totalItem = 0;
+        updatePageNumber();
+        $("#work-table>tbody").empty();
+        $.ajax({
+            url: "/Home/WorkCount?collection=all",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: 'json',
+            data: { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() },
+            success: function (data) {
+                totalItem = parseInt(data);
+                updatePageNumber();
+                $("#work-table>tbody").load("/Home/WorkList", { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+            }
+        });
+    });
+    $("#page-button-list").delegate(".change-page-button", "click", function (e) {
+        if (!($(e.target).hasClass("selected"))) {
+            $("#loading-icon").show();
+            $(".change-page-button").removeClass("selected");
+            $(e.target).addClass("selected");
+            $("#work-table>tbody").load("/Home/WorkList/" + $(e.target)[0].innerHTML, { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+            updatePagePos(parseInt($(e.target)[0].innerHTML));
+        }
+    });
+    function updatePagePos(index) {
+        if (index - (totalItem / 10) > 0) {
+            $(".next").prop('disabled', true);
+        }
+        else $(".next").prop('disabled', false);
+        if (index == 1) {
+            $(".previous").prop('disabled', true);
+        }
+        else $(".previous").prop('disabled', false);
+        var preHead = parseInt($(".change-page-button")[0].innerHTML);
+        for (var i = preHead; i < (index - 5) && ((totalItem / 10) - i - 9) > 0; i++) {
+            $("#page-button-list>li:first-child").remove();
+            $("#page-button-list").append("<li><button class='change-page-button'>" + (i + 10) + "</button></li>");
+        }
+        if (totalItem > 100)
+        for (var i = preHead + 9; i > (index + 4) && i > 10; i--) {
+            $("#page-button-list>li:last-child").remove();
+            $("#page-button-list").prepend("<li><button class='change-page-button'>" + (i - 10) + "</button></li>");
+        }
+    }
+    $(".control-page-button").click(function (e) {
+        if (!$(e.target).prop("disabled")) {
+            $("#loading-icon").show();
+            var tmp = $(".change-page-button.selected");
+            console.log($(".change-page-button.selected"));
+            if ($(e.target).hasClass("home")) {
+                $("#work-table>tbody").load("/Home/WorkList", { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+                updatePageNumber();
+            }
+            else if ($(e.target).hasClass("previous")) {
+                $("#work-table>tbody").load("/Home/WorkList/" + (parseInt(tmp[0].innerHTML) - 1), { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+                tmp.removeClass("selected");
+                console.log(tmp.parent().prev().children(".change-page-button").addClass("selected"));
+                updatePagePos(parseInt(tmp[0].innerHTML) - 1);
+            }
+            else if ($(e.target).hasClass("next")) {
+                $("#work-table>tbody").load("/Home/WorkList/" + (parseInt(tmp[0].innerHTML) + 1), { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
+                tmp.removeClass("selected");
+                console.log(tmp.parent().next().children(".change-page-button").addClass("selected"));
+                updatePagePos(parseInt(tmp[0].innerHTML) + 1);
+            }
+        }
+    })
+    function updatePageNumber() {
+        $("#page-button-list").empty();
+        $(".control-page-button").css("display", "none");
+        if (totalItem > 10) {
+            $(".control-page-button").css("display", "block");
+            $(".previous").prop('disabled', true);
+            for (var i = 0; i < 10 && i < (totalItem / 10); i++) {
+                $("#page-button-list").append("<li><button class='change-page-button'>" + (i + 1) + "</button></li>");
+            }
+            $(".change-page-button").removeClass("selected");
+            if ($(".change-page-button").length > 0) $($(".change-page-button")[0]).addClass("selected");
+        }
+    }
+    $("#work-table").ready(function () {
+        $.ajax({
+            url: "/Home/WorkCount?collection=@Model.ToString()",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                totalItem = parseInt(data);
+                updatePageNumber();
+                $("#work-table>tbody").load("/Home/WorkList/1?collection=@Model.ToString()" );
+            }
+        });
+    })
+</script>
 <div style="height: 20px; padding: 0 10px">
-    <div style=" width: 100%; height: 100%">
+    <div id="control-page-panel" style=" width: 100%; height: 100%">
+        <div style="width: 20px; height: 20px; float: left">
+            <img id="loading-icon" style="width: 20px; height: 20px" src="~/Icon/loading.svg" />
+        </div>
         <div style="float: right; display: flex">
-            <button style="height: 20px; margin: 0 10px">Trang đầu</button>
-            <button style="height: 20px; margin: 0 10px">Trước</button>
-            <ul style="list-style: none; padding: 0; margin: 0">
-                <li>
-                    <button class="change-page-button selected" style="width: 20px; height: 20px; background: #d3d3ff; outline: none; text-align: center; padding: 0">1</button>
-                    <button class="change-page-button" style="width: 20px; height: 20px; background: #d3d3ff; outline: none; text-align: center; padding: 0">2</button>
-                    <button class="change-page-button" style="width: 20px; height: 20px; background: #d3d3ff; outline: none; text-align: center; padding: 0">3</button>
-                </li>
-            </ul>
-            <button style="height: 20px; margin: 0 10px">Sau</button>
+            <button class="control-page-button home" style="height: 20px; margin: 0 10px">Trang đầu</button>
+            <button class="control-page-button previous" style="height: 20px; margin: 0 10px">Trước</button>
+            <ul id="page-button-list" style="list-style: none; padding: 0; margin: 0"></ul>
+            <button class="control-page-button next" style="height: 20px; margin: 0 10px">Sau</button>
         </div>
     </div>
 </div>
@@ -52,21 +148,6 @@
         </tr>
     </thead>
     <tbody>
-        @Html.Partial("WorkTableBody", Model)
     </tbody>
 </table>
-<script>
-    $(".search-work-input").change(function () {
-        console.log("change");
-        $("#work-table>tbody").load("/Home/WorkList", { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
-    })
-    $(".change-page-button").click(function (e) {
-        console.log($(e.target)[0].innerHTML);
-        if (!($(e.target).hasClass("selected"))) {
-            $(".change-page-button").removeClass("selected");
-            $(e.target).addClass("selected");
-            $("#work-table>tbody").load("/Home/WorkList/" + $(e.target)[0].innerHTML, { collection: $($(".menu-item-selected")[0]).parent().attr("value"), title: $(".search-work-input[name=title]").val(), assignee: $(".search-work-input[name=assignee]").val(), performer: $(".search-work-input[name=performer]").val(), status: $(".search-work-input[name=status]").val() });
-        }
-    })
-</script>
 

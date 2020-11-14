@@ -29,3 +29,20 @@
 #invitation-table > tbody > tr:nth-child(2n) {
     background: lightgrey;
 }
+
+.menu-bar-item {
+    height: 60px;
+    width: 80px;
+    line-height: 60px;
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 0 10px
+}
+
+.menu-bar-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: cadetblue;
+}

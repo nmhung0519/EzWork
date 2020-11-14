@@ -1,10 +1,10 @@
 ﻿@{Layout = null; }
 
-@model Hrm.Models.WorkBodyTableModel
+@model IEnumerable<Hrm.Models.AssignWorkInfoModel>
 
 @if (Model != null)
 {
-    foreach (var item in Model.ListItem)
+    foreach (var item in Model)
     {
         <tr class="work-row" data-itemid="@item.ID">
             <td style="text-align: center"><input class="row-disable" type="checkbox" /></td>
@@ -25,4 +25,7 @@
         </tr>
     }
 }
+<script>
+    $("#loading-icon").hide();
+</script>
 

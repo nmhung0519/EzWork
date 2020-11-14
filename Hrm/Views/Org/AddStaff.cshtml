@@ -16,41 +16,44 @@
     </div>
     <div style="width: 300px; padding: 10px; float: right">
         <label>Danh sách lời mời đã gửi</label>
-        <div style="width: 100%; height: 200px; box-shadow: 0 0 3px 0 dimgrey; overflow: hidden">
-            <table id="invitation-table" style="width: 100%; border-spacing: 0">
-                <tbody>
-                    @if (Model != null)
-                    {
-                        foreach (var item in Model)
+        <div style="width: 100%; height: 200px; box-shadow: 0 0 3px 0 dimgrey; overflow: auto">
+            <div style="width: 100%">
+                <table id="invitation-table" style="width: 100%; border-spacing: 0">
+                    <tbody>
+                        @if (Model != null)
                         {
-                            <tr style="height: 35px">
-                                <td style="padding: 0 5px">@item.User.GetName()</td>
-                                <td style="width: 105px">
-                                    @if (item.Status == 0)
-                                    {
-                                        <div style="outline: none; background: cornflowerblue; position: relative">
-                                            Đã gửi lời mời
-                                            <div class="sub-menu" style="display: grid; top: 20px; background: white; left: -1px; position: absolute; box-shadow: 0 0 2px 0 dimgrey">
-                                                <a>Huỷ lời mời</a>
+                            foreach (var item in Model)
+                            {
+                                <tr style="height: 35px">
+                                    <td style="padding: 0 5px">@item.User.GetName()</td>
+                                    <td style="width: 105px; position: relative">
+                                        @if (item.Status == 0)
+                                        {
+                                            <button class="change-invitation" style="outline: none; background: cornflowerblue; position: relative">
+                                                Đã gửi lời mời
+                                            </button>
+                                            <div class="sub-menu" style="display: grid; top: 30px; background: white; left: -1px; position: absolute; box-shadow: 0 0 2px 0 dimgrey; left: 2px; display: none; z-index: 999">
+                                                <a style="text-decoration: none; padding: 0 10px; border: 1px solid lightgrey" href="/">Huỷ lời mời</a>
                                             </div>
-                                        </div>
-                                    }
-                                    else if (item.Status == -1)
-                                    {
-                                        <div style="outline: none; background: red; position: relative">
-                                            Đã từ chối
-                                            <div class="sub-menu" style="display: grid; top: 20px; background: white; left: -1px; position: absolute; box-shadow: 0 0 2px 0 dimgrey">
-                                                <a href="/">Gửi lại lời mời</a>
-                                                <a>Xoá lời mời</a>
+                                        }
+                                        else if (item.Status == -1)
+                                        {
+                                            <button class="change-invitation" style="outline: none; background: cornflowerblue; position: relative">
+                                                Đã từ chối
+                                            </button>
+                                            <div class="sub-menu" style="display: grid; top: 30px; background: white; left: -1px; position: absolute; box-shadow: 0 0 2px 0 dimgrey; left: 2px; display: none; z-index: 999">
+                                                <a style="text-decoration: none; padding: 0 10px; border: 1px solid lightgrey" href="/">Xoá lời mời</a>
+                                                <a style="text-decoration: none; padding: 0 10px; border: 1px solid lightgrey" href="/">Gửi lại lời mời</a>
+
                                             </div>
-                                        </div>
-                                    }
-                                </td>
-                            </tr>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <script>
@@ -95,5 +98,13 @@
                 }
             })
         }
+        $(".change-invitation").focus(function (e) {
+            console.log($(e.target).next());
+            $(e.target).next().show();
+
+        });
+        $(".change-invitation").focusout(function (e) {
+            if (!$(e.originalEvent.relatedTarget).parent().hasClass("sub-menu")) $(e.target).next().hide();
+        });
     </script>
 </div>

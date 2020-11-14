@@ -72,7 +72,6 @@ E:\Projects\Hrm\Hrm\bin\System.Web.WebPages.Razor.xml
 E:\Projects\Hrm\Hrm\bin\Newtonsoft.Json.xml
 E:\Projects\Hrm\Hrm\bin\Antlr3.Runtime.pdb
 E:\Projects\Hrm\Hrm\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\Projects\Hrm\Hrm\obj\Debug\Hrm.csprojAssemblyReference.cache
 E:\Projects\Hrm\Hrm\obj\Debug\Hrm.csproj.CoreCompileInputs.cache
 E:\Projects\Hrm\Hrm\obj\Debug\Hrm.csproj.CopyComplete
 E:\Projects\Hrm\Hrm\obj\Debug\Hrm.dll
@@ -158,3 +157,4 @@ E:\Projects\Hrm\Hrm\bin\WebMatrix.Data.xml
 E:\Projects\Hrm\Hrm\bin\WebMatrix.WebData.xml
 E:\Projects\Hrm\Hrm\bin\MySql.Data.EntityFramework.dll
 E:\Projects\Hrm\Hrm\bin\MySql.Data.EntityFramework.xml
+E:\Projects\Hrm\Hrm\obj\Debug\Hrm.csprojAssemblyReference.cache

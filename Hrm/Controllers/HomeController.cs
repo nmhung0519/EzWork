@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Hrm.Helpers;
 using Hrm.Models;
-using System.Web.DynamicData;
-using Microsoft.Ajax.Utilities;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Hrm.Controllers
 {
@@ -37,12 +34,16 @@ namespace Hrm.Controllers
             if (Session["userid"] == null || Session["orgid"] == null) return RedirectToAction("Login", "Account");
             using (var db = new DBContext())
             {
-                var model = db.GetAssignWorkInfoList(int.Parse(Session["staffid"].ToString()), "all", "", "", "", "");
-                if (pageIndex * 10 - 1 > model.Count)
-                {
-                    return PartialView("WorkTable", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, model.Count - ((pageIndex - 1) * 10))));
-                }
-                return PartialView("WorkTable", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, 10)));
+                return PartialView("WorkTable", (Object)"all");
+            }
+        }
+
+        [HttpGet]
+        public JsonResult WorkCount(string collection, string title, string assignee, string performer, string status)
+        {
+            using (var db = new DBContext())
+            {
+                return Json(db.CountAssignWork(int.Parse(Session["staffid"].ToString()), collection, title, assignee, performer, status), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -57,12 +58,7 @@ namespace Hrm.Controllers
             if (Session["userid"] == null || Session["orgid"] == null) return RedirectToAction("Login", "Account");
             using (var db = new DBContext())
             {
-                var model = db.GetAssignWorkInfoList(int.Parse(Session["staffid"].ToString()), "assign", "", "", "", "");
-                if (pageIndex * 10 - 1 > model.Count)
-                {
-                    return PartialView("WorkTable", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, model.Count - ((pageIndex - 1) * 10))));
-                }
-                return PartialView("WorkTable", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, 10)));
+                return PartialView("WorkTable", (Object)"assign");
             }
         }
 
@@ -77,12 +73,7 @@ namespace Hrm.Controllers
             if (Session["userid"] == null || Session["orgid"] == null) return RedirectToAction("Login", "Account");
             using (var db = new DBContext())
             {
-                var model = db.GetAssignWorkInfoList(int.Parse(Session["staffid"].ToString()), "assignto", "", "", "", "");
-                if (pageIndex * 10 - 1 > model.Count)
-                {
-                    return PartialView("WorkTable", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, model.Count - ((pageIndex - 1) * 10))));
-                }
-                return PartialView("WorkTable", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, 10)));
+                return PartialView("WorkTable", (Object)"assignto");
             }
         }
 
@@ -177,12 +168,7 @@ namespace Hrm.Controllers
             int pageIndex = int.Parse(page);
             using (var db = new DBContext())
             {
-                var model = db.GetAssignWorkInfoList(int.Parse(Session["staffid"].ToString()), collection, title, assignee, performer, status);
-                if (pageIndex * 10 - 1 > model.Count)
-                {
-                    return PartialView("WorkTableBody", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, model.Count - ((pageIndex - 1) * 10))));
-                }
-                return PartialView("WorkTableBody", new WorkBodyTableModel(model.Count, model.GetRange((pageIndex - 1) * 10, 10)));
+                return PartialView("WorkTableBody", db.GetAssignWorkInfoList(pageIndex, int.Parse(Session["staffid"].ToString()), collection, title, assignee, performer, status));
             }
         }
 

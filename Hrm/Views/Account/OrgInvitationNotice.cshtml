@@ -5,9 +5,9 @@
 <div id="org-invitation-notification">
     @if (Model != null && Model.Count() > 0)
     {
-        <div style="height: 18px; width: 18px; position: absolute; background: red; font-size: 14px; line-height: 18px; border-radius: 18px; color: white; top: -3px; left: 13px;">@Model.Count()</div>
+        <div style="height: 18px; width: 18px; position: absolute; background: red; font-size: 14px; line-height: 18px; border-radius: 18px; color: white; top: -3px; left: 13px; user-select: none">@Model.Count()</div>
     }
-    <div style="left: -4px; top: 6px; width: 300px; height: 100px; box-shadow: 0 0 3px 0 dimgrey; position: relative; background: white; z-index: 999; visibility: hidden; cursor: default; padding: 10px">
+    <div style="left: -4px; top: 25px; width: 300px; height: 100px; box-shadow: 0 0 3px 0 dimgrey; position: relative; background: white; z-index: 999; visibility: hidden; cursor: default; padding: 10px">
         <div>
             <label style="font-size: 18px">Danh sách lời mời</label>
         </div>
@@ -16,9 +16,9 @@
                 @foreach (var item in Model)
                 {
                     <tr class="invitation-row" data-id="@item.ID">
-                        <td>@item.Org.Name</td>
-                        <td style="padding: 0 5px; width: 30px;"><div class="invitation-accept-button" style="height: 20px; width: 20px; background: green; border-radius: 20px; cursor: pointer; text-align: center; line-height: 20px">V</div></td>
-                        <td style="padding: 0 5px; width: 30px"><div class="invitation-deny-button" style="height: 20px; width: 20px; background: red; border-radius: 20px; cursor: pointer; text-align: center; line-height: 20px">X</div></td>
+                        <td style="width: 100%">@item.Org.Name</td>
+                        <td style="padding: 0 5px; width: 30px;"><div class="invitation-accept-button" style="height: 20px; width: 20px; background: green; border-radius: 20px; cursor: pointer; text-align: center; line-height: 20px; color: white; font-family: monospace">V</div></td>
+                        <td style="padding: 0 5px; width: 30px"><div class="invitation-deny-button" style="height: 20px; width: 20px; background: red; border-radius: 20px; cursor: pointer; text-align: center; line-height: 20px; color: white; font-family: monospace">X</div></td>
                     </tr>
                 }
             </tbody>
@@ -38,7 +38,7 @@
                 }
             })
         });
-        $(".invitation-deny-button").click(function () {
+        $(".invitation-deny-button").click(function (e) {
             $.ajax({
                 url: "/Org/Invitaion/" + $(e.target).parents(".invitation-row").attr("data-id") + "?accept=false",
                 type: "POST",
